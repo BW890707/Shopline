@@ -1,0 +1,158 @@
+﻿
+@{
+    ViewBag.Title = "Detail";
+}
+@model ProductResult
+
+@foreach (var item in Model.ProductDetail)
+{
+    <!-- Detail Start -->
+    <div class="container-fluid py-5">
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="mb-5">
+                        <div class="section-title position-relative mb-5">
+                            <h1 class="display-4">@item.ProductName</h1>
+                            <input type="hidden" value="@item.ProductName" id="ProductName" />
+                            <input type="hidden" value="@item.Id" id="ProductID" />
+                        </div>
+                        <img class="img-fluid rounded w-100 mb-4" src="@item.Image" alt="Image">
+                        <p>
+
+                            處理器 Intel Core i5-6300u<br />
+
+                            記憶體 8G／16G<br />
+
+                            硬碟 240G／480G SSD<br />
+
+                            顯示 Intel® HD Graphics 520<br />
+
+                            螢幕 12.5吋
+                        </p>
+
+                        <p>
+                            收貨來源源自各大公司，各大標案，各機關等，機器穩定度高，機器平日上班吹冷氣，假日休息不辦公，電腦外觀，穩定度上會比市面個人自售等賣家來的更高，更穩定，再經由專業工程師一系列檢測SOP整備，清潔，才會送到每個客戶手上，每個環節都盡力做到最好，盡請安心選購！ 出貨皆含有一套正版WINDOWS，一套免費版OFFICE文書軟體，開機即用。 本公司售出筆電，皆保固一個月免費維修服務。 過保固後，享有後續完整保修服務(酌收材料/工費) 免費保固期間內，保固主機本體，主機本體硬體部分係指：螢幕，鍵盤，電池，主機板，喇叭。 螢幕面板保無破，無重大瑕疵。 周邊商品，贈品，軟體不在保固部分。 二手商品，不保固外觀部分 ，賣場已盡力細圖呈現，建議多翻閱照片，商品皆實機拍攝。
+                        </p>
+                    </div>
+
+
+
+                </div>
+
+                <div class="col-lg-4 mt-5 mt-lg-0">
+                    <div class="bg-primary mb-5 py-3">
+                        <h3 class="text-white py-3 px-4 m-0">商品備註</h3>
+                        <div class="d-flex justify-content-between border-bottom px-4">
+                            <h6 class="text-white my-3">物品狀況：</h6>
+                            <h6 class="text-white my-3">@item.Status</h6>
+                        </div>
+                        <div class="d-flex justify-content-between border-bottom px-4">
+                            <h6 class="text-white my-3">物品所在地：</h6>
+                            <h6 class="text-white my-3">@item.Location</h6>
+                        </div>
+                        <div class="d-flex justify-content-between border-bottom px-4">
+                            <h6 class="text-white my-3">最新關注時間： </h6>
+                            <h6 class="text-white my-3">@DateTime.Now.ToString()</h6>
+                        </div>
+                        <div class="d-flex justify-content-between border-bottom px-4">
+                            <h6 class="text-white my-3">上架時間：</h6>
+                            <h6 class="text-white my-3">@item.AddedTime</h6>
+                        </div>
+                        <div class="d-flex justify-content-between border-bottom px-4">
+                            <h6 class="text-white my-3">商品價格更新時間:</h6>
+                            <h6 class="text-white my-3">@item.UpdateTime</h6>
+                        </div>
+                        <div class="d-flex justify-content-between px-4">
+                            <h6 class="text-white my-3">庫存:</h6>
+                            <h6 class="text-white my-3">@item.Stock</h6>
+                        </div>
+                        <h5 class="text-white py-3 px-4 m-0">價格: @item.Price<small>(NTD)</small></h5>
+                        <input type="hidden" value="@item.Price" id="Price" />
+                        @if (Session["username"] != null)
+                        {
+                            <div class="py-3 px-4">
+                                <button onclick="create()" class="btn btn-block btn-secondary py-3 px-5">加入購物車</button>
+                            </div>
+                        }
+                        else
+                        {
+
+                        }
+
+                    </div>
+
+                    <div class="mb-5">
+                        <h2 class="mb-3">賣家資訊</h2>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                <span class="text-decoration-none h6 m-0">賣家帳號：</span>
+                                <a href="">@item.SellerAccount</a>
+                                <input type="hidden" value="@item.SellerAccount" id="SellerAccount" />
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                <a href="" class="text-decoration-none h6 m-0">全部商品：</a>
+                                <span>727</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                <a href="" class="text-decoration-none h6 m-0">賣場評價：</a>
+                                <span class="fa fa-star" style="color:gold" />
+                                <span style="color:red">5.0</span>
+                            </li>
+
+                        </ul>
+                    </div>
+
+                    <div class="mb-5">
+                        <h2 class="mb-4">相關商品</h2>
+                        <a class="d-flex align-items-center text-decoration-none mb-4" href="/Product/Detail2">
+                            <img class="img-thumbnail " src="~/img/item2.jpg" alt="">
+                            <div class="pl-3">
+                                <h6>筆電 14吋 商務筆電 Lenovo Thinkpad T470 i5-6300/8G/240G 固態硬碟</h6>
+                                <div class="d-flex">
+                                    <small class="text-body mr-3"><i class="fa fa-user text-primary mr-2"></i>茜仔筆電小舖</small>
+                                    <small class="text-body"><i class="fa fa-dollar-sign text-primary mr-2"></i>4,9999 (NTD)</small>
+                                </div>
+                            </div>
+                        </a>
+                        <a class="d-flex align-items-center text-decoration-none mb-4" href="/Product/Detail3">
+                            <img class="img-thumbnail" src="~/img/item3.jpg" alt="">
+                            <div class="pl-3">
+                                <h6>ASUS ROG 電競筆電 GA503QR-0022E5900HS 潮魂黑</h6>
+                                <div class="d-flex">
+                                    <small class="text-body mr-3"><i class="fa fa-user text-primary mr-2"></i>茜仔筆電小舖</small>
+                                    <small class="text-body"><i class="fa fa-dollar-sign text-primary mr-2"></i>6,9999 (NTD)</small>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Detail End -->
+}
+
+<script>
+    function create() {
+        $.ajax({
+            url: '@Url.Action("CreateShoppingCart", "Product")' ,
+            type: 'POST',
+            data:
+            {
+                ProductName: $('#ProductName').val(),
+                SellerAccount: $('#SellerAccount').val(),
+                Price: $('#Price').val(),
+                ProductID: $('#ProductID').val()
+            },
+            success: function (result) {
+                if (result) {
+                    alert("已加入購物車");
+                }
+            },
+            error: function () {
+                $('#form-messages').html('<div class="alert alert-danger">An error occurred while submitting the form</div>');
+            }
+        });
+    }
+</script>

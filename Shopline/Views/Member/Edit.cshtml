@@ -1,0 +1,84 @@
+﻿
+@{
+    ViewBag.Title = "Edit";
+}
+
+
+@model User
+<div class="section-title text-center position-relative mb-5">
+    <h1 class="display-4">帳號管理</h1>
+</div>
+    <div class="content-form-page col-lg-12">
+            <div class="form-group">
+                <label class="col-lg-2 control-label">賣家帳號 <span class="require">*</span></label>
+                <div class="col-lg-3">
+                    <input type="text" id="UserName" class="form-control border-5 fa-black-tie" value="@Model.UserName">
+                    <input type="hidden" id="Id" value="@Model.Id" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-lg-2 control-label">賣家密碼 <span class="require">*</span></label>
+                <div class="col-lg-3">
+                    <input type="text" id="PassWord" class="form-control border-5 fa-black-tie" value="@Model.PassWord">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-lg-2 control-label">賣場名稱 <span class="require">*</span></label>
+                <div class="col-lg-3">
+                    <input type="text" id="SellerName" class="form-control border-5 fa-black-tie" value="@Model.SellerName">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-lg-8 col-md-offset-2 padding-left-0 padding-top-20">
+                    <button onclick="editAccount()">編輯完成</button>
+                    <button onclick="deleteAccount(@Model.Id)">刪除帳號</button>
+                </div>
+            </div>
+            
+    </div>
+
+
+    <script>
+    function editAccount() {
+        var Id = $('#Id').val();
+
+        $.ajax({
+        url: '@Url.Action("EditData", "Member")' ,
+        type: 'POST',
+        data:
+        {
+            Id: $('#Id').val(),
+            UserName: $('#UserName').val(),
+            PassWord: $('#PassWord').val(),
+            SellerName: $('#SellerName').val()
+        },
+        success: function (result) {
+            if (result) {
+                alert("修改成功");
+                window.location.href = '@Url.Action("Edit", "Member")';
+            }
+        },
+        error: function () {
+            $('#form-messages').html('<div class="alert alert-danger">An error occurred while submitting the form</div>');
+        }
+    });
+}
+
+    //function editLogin() {
+    //    var Id = $('#Id').val();
+    //    var isTrue = alert('編輯成功');
+    //    if (isTrue) {
+    //        window.location.href = "/Member/Edit2?Id=" + Id;
+    //    }
+    //};
+
+    function deleteAccount(i) {
+        var isTrue = confirm('是否確定刪除?');
+        if (isTrue) {
+            window.location.href = '@Url.Action("DeleteAccount", "Member")?Id=' + i;
+        }
+     }
+    </script>

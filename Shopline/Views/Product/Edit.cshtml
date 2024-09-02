@@ -1,0 +1,97 @@
+﻿
+@{
+
+    ViewBag.Title = "Edit";
+}
+
+@model ProductResult
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        #customers {
+            font-family: Arial, Helvetica, sans-serif;
+            border: 50px white solid;
+            width: 100%;
+        }
+
+            #customers td, #customers th {
+                border: 1px solid #ddd;
+                padding: 8px;
+            }
+
+            #customers tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+
+            #customers tr:hover {
+                background-color: #ddd;
+            }
+
+            #customers th {
+                padding-top: 12px;
+                padding-bottom: 12px;
+                text-align: left;
+                background-color: #04AA6D;
+                color: white;
+            }
+    </style>
+</head>
+
+<body>
+
+    <div class="section-title text-center position-relative mb-5">
+        <h1 class="display-4">商品管理</h1>
+    </div>
+    @*<input type="text" id="table-search" class="block pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for items">*@
+    <table id="customers">
+        <tr>
+            <th>圖片</th>
+            <th>商品名稱</th>
+            <th>價格</th>
+            <th>類別</th>
+            <th>庫存</th>
+            <th>設定</th>
+        </tr>
+        @if (Model.Product != null)
+        {
+            int count = 0;
+            foreach (var item in Model.Product)
+            {
+                <tr>
+                    <td>
+                        <img src="@item.Image" width="150" />
+                    </td>
+                    <td>@item.ProductName<input type="hidden" value="@item.Id" id="Id_@count" /></td>
+                    <td>@item.Price</td>
+                    <td>@item.category</td>
+                    <td>@item.Stock</td>
+                    <td>
+                        <button onclick="editProduct(@count)">編輯</button>
+                        <button onclick="deleteProduct(@count)">刪除</button>
+                    </td>
+                </tr>
+                count++;
+            }
+        }
+
+    </table>
+
+</body>
+</html>
+
+<script>
+    function editProduct(i) {
+        var id = $('#Id_' + i).val();
+        window.location.href = "/Product/Edit2?Id=" + id;
+    };
+
+    function deleteProduct(i) {
+        var id = $('#Id_' + i).val();
+        var isTrue = confirm('是否確定刪除?');
+        if (isTrue) {
+        window.location.href = "/Product/Delete?Id=" + id;
+        }
+    }
+</script>

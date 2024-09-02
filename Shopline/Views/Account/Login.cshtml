@@ -1,0 +1,94 @@
+﻿@{
+    ViewBag.Title = "Login";
+}
+
+<!-- Contact Start -->
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <div class="row align-items-center">
+            <div class="col-lg-5 mb-5 mb-lg-0">
+                <div class="bg-light d-flex flex-column justify-content-center px-5" style="height: 450px;">
+                    <div class="d-flex align-items-center mb-5">
+                        <div class="btn-icon bg-primary mr-4">
+                            <i class="fa fa-2x fa-birthday-cake text-white"></i>
+                        </div>
+                        <div class="mt-n1">
+                            <h4>新進福利</h4>
+                            <p class="m-0">新註冊會員免費試用30天</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center mb-5">
+                        <div class="btn-icon bg-secondary mr-4">
+                            <i class="fa fa-2x fa-heart text-white"></i>
+                        </div>
+                        <div class="mt-n1">
+                            <h4>貼心提醒</h4>
+                            <p class="m-0">若密碼輸入錯誤超過5次，帳號將會被鎖定</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="btn-icon bg-warning mr-4">
+                            <i class="fa fa-2x fa-sticky-note text-white"></i>
+                        </div>
+                        <div class="mt-n1">
+                            <h4>使用須知</h4>
+                            <p class="m-0">當你註冊開店，即表示你已同意 3CSHOP隱私權政策 與會員條款 </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="section-title position-relative  mb-4">
+                    <h1 class="display-4">登入會員</h1>
+                </div>
+                <div class="contact-form">
+                    <div class="row">
+                        <div class="col-6 form-group">
+                            <input type="text" class="form-control border-top-0 border-right-0 border-left-0 p-0" id="UserName" name="UserName" placeholder="帳號" required="required">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6 form-group">
+                            <input type="password" class="form-control border-top-0 border-right-0 border-left-0 p-0" id="PassWord" name="PassWord" placeholder="密碼" required="required">
+                        </div>
+                    </div>
+
+                    <div>
+                        <button type="button" onclick="getLogin()" class="btn btn-primary py-3 px-5">登入</button>
+                        <h6 class="d-inline-block position-relative text-secondary text-uppercase pb-2" href="">忘記密碼?</h6>
+                    </div>
+                    <div id="form-messages"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Contact End -->
+
+<script>
+
+
+    function getLogin() {
+        $.ajax({
+            url: '@Url.Action("GetLogin", "Account")',
+            type: 'POST',
+            data:
+            {
+                UserName: $('#UserName').val(),
+                PassWord: $('#PassWord').val()
+            },
+            success: function (response) {
+            if (response.success) {
+                window.location.href = '@Url.Action("Index", "Home")';
+            }
+             else {
+                alert(response.message);
+              }
+            },
+            error: function () {
+                    $('#form-messages').html('<div class="alert alert-danger">An error occurred while submitting the form</div>');
+             }
+        });
+    }
+</script>

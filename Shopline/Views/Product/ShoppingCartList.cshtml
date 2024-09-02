@@ -1,0 +1,128 @@
+﻿
+@{
+    ViewBag.Title = "ShoppingCartList";
+}
+@model List<ShoppingCart>
+
+<div class="container px-3 my-5 clearfix">
+    <!-- Shopping cart table -->
+    <div class="card">
+        <div class="card-header">
+            <h2>我的購物車</h2>
+        </div>
+        @using (Html.BeginForm("CheckOrder", "Product", FormMethod.Post))
+        {
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered m-0">
+                        <thead>
+                            <tr>
+                                <!-- Set columns width -->
+                                <th class="text-center py-3 px-4" style="min-width: 400px;">商品名稱</th>
+                                <th class="text-right py-3 px-4" style="width: 100px;">價格</th>
+                                <th class="text-center py-3 px-4" style="width: 120px;">件數</th>
+                                <th class="text-right py-3 px-4" style="width: 100px;">總金額</th>
+                                <th class="text-center align-middle py-3 px-0" style="width: 40px;"><a href="#" class="shop-tooltip float-none text-light" title="" data-original-title="Clear cart"><i class="ino ion-md-trash"></i></a></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null)
+                            {
+                                int count = 0;
+                                foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td class="p-4">
+                                            <div class="media align-items-center">
+                                                <img src="@item.Image" class="d-block ui-w-40 ui-bordered mr-4" alt="" width="300">
+                                                <div class="media-body">
+                                                    <input type="hidden" value="@item.ID" name="Items[@count].ID" />
+                                                    <a href="/Product/Detail" class="d-block text-dark">@item.ProductName</a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-right font-weight-semibold align-middle p-4">@item.Price<input type="hidden" id="Price_@count" value="@item.Price" /></td>
+                                        <td class="align-middle p-4">
+                                            <button type="button" class="form-control text-center" onclick="addCount(@count)">+</button>
+                                            <input type="text" readonly class="form-control text-center" value="@item.Count" id="Count_@count" name="Items[@count].Count">
+                                            <button type="button" class="form-control text-center" onclick="reduce(@count)">-</button>
+                                        </td>
+                                        <td class="text-right font-weight-semibold align-middle p-4"><label id="total_@count">@(item.Price * @item.Count)</label></td>
+                                        <td class="text-center align-middle px-0"><a href="@Url.Action("DeleteShoppingCart", "Product", new { id = item.ID })" class="shop-tooltip close float-none text-danger" title="" data-original-title="Remove">×</a></td>
+                                    </tr>
+                                    count++;
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <!-- / Shopping cart table -->
+                @if (Model != null)
+                {
+                    int totalPrice = 0;
+                    foreach (var item in Model)
+                    {
+                        totalPrice += (item.Price * item.Count);
+                    }
+                    <div class="d-flex flex-wrap justify-content-between align-items-center pb-4">
+                        <div class="mt-4">
+                        </div>
+                        <div class="d-flex">
+                            <div class="text-right mt-4 mr-5">
+                            </div>
+                            <div class="text-right mt-4">
+                                <label class="text-muted font-weight-normal m-0">訂單總金額</label>
+                                <div class="text-large"><strong>$<label id="totalPrice">@totalPrice</label></strong></div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <div class="float-right">
+                    <a href="/Product/Index">
+                    <button type="button" class="btn btn-lg btn-default md-btn-flat mt-2 mr-3">繼續購物</button>
+                    </a>
+                    
+                    <button type="submit" class="btn btn-lg btn-primary mt-2">確定結帳</button>
+                </div>
+
+            </div>
+        }
+    </div>
+</div>
+
+
+<script>
+    function deleteShoppingCart(i) {
+        var id = $('#Id_' + i).val();
+        var isTrue = confirm('是否確定刪除?');
+        if (isTrue) {
+            window.location.href = "/Product/Delete?Id=" + id;
+        }
+    }
+    function addCount(i) {
+        var count = $('#Count_' + i).val();
+        var countAfter = Number(count) + 1;
+        $('#Count_' + i).val(countAfter);
+        var price = $('#Price_' + i).val();
+        var newPrice = Number(price) * countAfter;
+        document.getElementById('total_' + i).innerText = newPrice;
+        var totalPrice = document.getElementById('totalPrice').innerText;
+        var totalPriceAfter = Number(totalPrice) + Number(price);
+        document.getElementById('totalPrice').innerText = totalPriceAfter;
+    }
+    function reduce(i) {
+        var count = $('#Count_' + i).val();
+        if (count > "1") {
+            var countAfter = Number(count) - 1;
+            $('#Count_' + i).val(countAfter);
+            var price = $('#Price_' + i).val();
+            var newPrice = Number(price) * countAfter;
+            document.getElementById('total_' + i).innerText = newPrice;
+            var totalPrice = document.getElementById('totalPrice').innerText;
+            var totalPriceAfter = Number(totalPrice) - Number(price);
+            document.getElementById('totalPrice').innerText = totalPriceAfter;
+        }
+    }
+</script>
+

@@ -1,0 +1,135 @@
+﻿
+@{
+    ViewBag.Title = "OrderIndex";
+}
+@model List<OrderResult>
+
+<div class="section-title text-center position-relative mb-5">
+    <h1 class="display-4">訂單管理</h1>
+</div>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        #customers {
+            font-family: Arial, Helvetica, sans-serif;
+            border: 50px white solid;
+            width: 100%;
+        }
+
+            #customers td, #customers th {
+                border: 1px solid #ddd;
+                padding: 8px;
+            }
+
+            #customers tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+
+            #customers tr:hover {
+                background-color: #ddd;
+            }
+
+            #customers th {
+                padding-top: 12px;
+                padding-bottom: 12px;
+                text-align: left;
+                background-color: #04AA6D;
+                color: white;
+            }
+    </style>
+</head>
+
+<body>
+
+
+    <table id="customers">
+        @if (Model != null)
+        {
+            int count = 0;
+            foreach (var item in Model)
+            {
+                <tr>
+                    <th>訂單編號</th>
+                    <th>訂單時間</th>
+                    <th>買家名稱</th>
+                    <th>商品名稱</th>
+                    <th>結帳金額</th>
+                    <th>總件數</th>
+                    <th>訂單狀態</th>
+                    <th>設定</th>
+                </tr>
+                foreach (var orders in item.OrderValues)
+                {
+    <tr>
+        <td>@item.OrderModel.OrderNumber<input type="hidden" id="Id_@count" value="@orders.ID" /></td>
+        <td>@item.OrderModel.OrderDate</td>
+        <td>@item.OrderModel.BuyerName</td>
+        <td>@orders.ProductName</td>
+        <td>@(orders.Price*orders.Count)<input type="hidden" value="@orders.ProductID" id="ProductID_@count" /></td>
+        <td><input type="text" value="@orders.Count" id="Count_@count" /> </td>
+        <td>@orders.Status</td>
+        <td>
+            <button onclick="editProduct(@count)">編輯</button>
+            <button onclick="deleteProduct(@count)">取消訂單</button>
+        </td>
+    </tr>
+                    count++;
+                }
+            }
+        }
+
+    </table>
+
+</body>
+</html>
+
+<script>
+    function editProduct(i) {
+        var CountVal = $('#Count_' + i).val();
+        var IdVal = $('#Id_' + i).val();
+        $.ajax({
+            url: '@Url.Action("OrderEdit", "Order")',
+            type: 'POST',
+            data:
+            {
+                Id: IdVal,
+                Count: CountVal,
+            },
+            success: function (result) {
+                if (result.success) {
+                    alert("編輯成功");
+                    window.location.href = '@Url.Action("OrderIndex", "Order")';
+                }
+            },
+            error: function () {
+                $('#form-messages').html('<div class="alert alert-danger">An error occurred while submitting the form</div>');
+            }
+        });
+    }
+
+    function deleteProduct(i) {
+        var idVal = $('#Id_' + i).val();
+        var isTrue = confirm('是否確定刪除?');
+        if (isTrue) {
+            $.ajax({
+                url: '@Url.Action("OrderCancel", "Order")',
+                type: 'POST',
+                data:
+                {
+                    ID: idVal
+                },
+                success: function (result) {
+                    if (result.success) {
+                        alert("取消成功");
+                        window.location.href = '@Url.Action("OrderIndex", "Order")';
+                    }
+                },
+                error: function () {
+                    $('#form-messages').html('<div class="alert alert-danger">An error occurred while submitting the form</div>');
+                }
+            });
+        }
+    }
+</script>

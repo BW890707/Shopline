@@ -1,0 +1,181 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+@model ReportData
+
+<div class="section-title text-center position-relative mb-5">
+    <h1 class="display-4">營收報表</h1>
+</div>
+
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+
+        #customers {
+            font-family: Arial, Helvetica, sans-serif;
+            border: 50px white solid;
+            width: 100%;
+        }
+
+            #customers td, #customers th {
+                border: 1px solid #ddd;
+                padding: 8px;
+            }
+
+            #customers tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+
+            #customers tr:hover {
+                background-color: #ddd;
+            }
+
+            #customers th {
+                padding-top: 12px;
+                padding-bottom: 12px;
+                text-align: left;
+                background-color: #04AA6D;
+                color: white;
+            }
+    </style>
+</head>
+
+
+<body>
+    <table id="customers">
+        <tr>
+            <th>總筆數</th>
+            <th>總金額</th>
+        </tr>
+
+        <tr>
+            <td>@Model.TotalCount</td>
+            <td>@Model.TotalPrice</td>
+        </tr>
+
+        <tr>
+            <th>售出種類</th>
+            <th>訂單取消</th>
+        </tr>
+
+        <tr>
+            <td width="25%" height="25%">
+                <!-- 長條圖顯示的位置 -->
+                <canvas id="myChart"></canvas>
+
+                <!-- 長條圖的原始程式碼, 可以移除掉長條圖就會消失 -->
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+                <script>
+                    const chartElement = document.getElementById('myChart');
+                    const data = {
+                        labels: [
+                            '筆電',
+                            '平板電腦',
+                            '其他',
+                        ],
+                        datasets: [{
+                            label: '已售數量',
+                            data: [@Model.Notebook, @Model.IPad, @Model.other],
+                        }]
+                    };
+                    new Chart(chartElement, {
+                        type: 'pie',
+                        data: data,
+                    });
+
+                </script>
+            </td>
+
+            <td width="25%" height="25%">
+                @Model.CalcelCount
+            </td>
+        </tr>
+
+        <tr>
+            <th>當日訂單數</th>
+            <th>當日訂單總金額</th>
+        </tr>
+
+        <tr>
+            <td>@Model.TodayCount</td>
+            <td>@Model.TodayPrice</td>
+        </tr>
+
+        <tr>
+            <th>當月訂單數</th>
+            <th>當月訂單總金額</th>
+        </tr>
+
+        <tr>
+            <td>@Model.ThisMonthCount</td>
+            <td>@Model.ThisMonthPrice</td>
+        </tr>
+
+        <tr>
+            <th>
+                <input type="date" id="startCount" name="trip-start" value="2024-07-19" min="2024-01-01" />
+                ~
+                <input type="date" id="endCount" name="trip-start" value="2024-07-19" min="2024-01-01" />
+                訂單數
+                <button type="button" onclick="getTotalCount()">搜尋</button>
+            </th>
+            <th>
+                <input type="date" id="startPrice" name="trip-start" value="2024-07-19" min="2024-01-01" />
+                ~
+                <input type="date" id="endPrice" name="trip-start" value="2024-07-19" min="2024-01-01" />
+                訂單總金額
+                <button type="button" onclick="getTotalPrice()">搜尋</button>
+            </th>
+        </tr>
+
+        <tr>
+            <td><label id="totalCount">0</label></td>
+            <td><label id="totalPrice">0</label></td>
+        </tr>
+    </table>
+</body>
+</html>
+<script>
+    function getTotalCount() {
+    $.ajax({
+            url: '@Url.Action("GetTotalOrder", "Report")' ,
+            type: 'POST',
+            data:
+            {
+                FirstTime: $('#startCount').val(),
+                LastTime: $('#endCount').val()
+            },
+        success: function (result) {
+            var count = result.TotalCount;
+            $('#totalCount').text(count);
+            },
+            error: function () {
+                $('#form-messages').html('<div class="alert alert-danger">An error occurred while submitting the form</div>');
+            }
+        });
+    }
+    function getTotalPrice() {
+    $.ajax({
+            url: '@Url.Action("GetTotalPrice", "Report")' ,
+            type: 'POST',
+            data:
+            {
+                FirstTime: $('#startPrice').val(),
+                LastTime: $('#endPrice').val()
+            },
+        success: function (result) {
+            var count = result.TotalPrice;
+            $('#totalPrice').text(count);
+            },
+            error: function () {
+                $('#form-messages').html('<div class="alert alert-danger">An error occurred while submitting the form</div>');
+            }
+        });
+    }
+</script>

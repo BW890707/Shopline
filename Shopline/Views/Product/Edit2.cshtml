@@ -1,0 +1,139 @@
+﻿
+@{
+    ViewBag.Title = "Edit2";
+}
+
+@model ProductResult
+
+<div class="content-form-page">
+    @foreach (var item in Model.Product)
+    {
+
+
+        <div class="form-group">
+            <label class="col-lg-2 control-label">產品名稱 <span class="require">*</span></label>
+            <div class="col-lg-3">
+                <input type="text" id="ProductName" class="form-control" value="@item.ProductName">
+                <input type="hidden" id="Id" value="@item.Id" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-lg-2 control-label">價格 <span class="require">*</span></label>
+            <div class="col-lg-3">
+                <input type="text" id="Price" class="form-control" value="@item.Price">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-lg-2 control-label">庫存 <span class="require">*</span></label>
+            <div class="col-lg-3">
+                <input type="text" id="Stock" class="form-control" value="@item.Stock">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-lg-2 control-label">商品狀況 <span class="require">*</span></label>
+            <div class="input-group-prepend">
+                <select class="btn btn-outline-light bg-white text-body px-4" id="Status">
+                    <option selected="selected" value="">請選擇:</option>
+                    <option value="全新" @(item.Status == "全新" ? "selected" : "")>全新</option>
+                    <option value="二手" @(item.Status == "二手" ? "selected" : "")>二手</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-lg-2 control-label">類別 <span class="require">*</span></label>
+            <div class="input-group-prepend">
+                <select class="btn btn-outline-light bg-white text-body px-4" id="category">
+                    <option value="">請選擇:</option>
+                    <option value="筆電" @(item.category == "筆電" ? "selected" : "")>筆電</option>
+                    <option value="平板電腦" @(item.category == "平板電腦" ? "selected" : "")>平板電腦</option>
+                    <option value="其他" @(item.category == "其他" ? "selected" : "")>其他</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-lg-2 control-label">商品所在地 <span class="require">*</span></label>
+            <div class="input-group-prepend">
+                <select class="btn btn-outline-light bg-white text-body px-4" id="Location">
+                    <option selected="selected" value="">請選擇:</option>
+                    <option value="台灣.基隆市"@(item.Location == "台灣.基隆市" ? "selected" : "")>基隆市</option>
+                    <option value="台灣.臺北市"@(item.Location == "台灣.臺北市" ? "selected" : "")>臺北市</option>
+                    <option value="台灣.新北市"@(item.Location == "台灣.新北市" ? "selected" : "")>新北市</option>
+                    <option value="台灣.新竹市"@(item.Location == "台灣.新竹市" ? "selected" : "")>新竹市</option>
+                    <option value="台灣.新竹縣"@(item.Location == "台灣.新竹縣" ? "selected" : "")>新竹縣</option>
+                    <option value="台灣.臺中市"@(item.Location == "台灣.臺中市" ? "selected" : "")>臺中市</option>
+                    <option value="台灣.彰化縣"@(item.Location == "台灣.彰化縣" ? "selected" : "")>彰化縣</option>
+                    <option value="台灣.南投縣"@(item.Location == "台灣.南投縣" ? "selected" : "")>南投縣</option>
+                    <option value="台灣.雲林縣"@(item.Location == "台灣.雲林縣" ? "selected" : "")>雲林縣</option>
+                    <option value="台灣.嘉義市"@(item.Location == "台灣.嘉義市" ? "selected" : "")>嘉義市</option>
+                    <option value="台灣.嘉義縣"@(item.Location == "台灣.嘉義縣" ? "selected" : "")>嘉義縣</option>
+                    <option value="台灣.臺南市"@(item.Location == "台灣.臺南市" ? "selected" : "")>臺南市</option>
+                    <option value="台灣.高雄市"@(item.Location == "台灣.高雄市" ? "selected" : "")>高雄市</option>
+                    <option value="台灣.臺中市"@(item.Location == "台灣.臺中市" ? "selected" : "")>臺中市</option>
+                    <option value="台灣.屏東縣"@(item.Location == "台灣.屏東縣" ? "selected" : "")>屏東縣</option>
+                    <option value="台灣.臺東縣"@(item.Location == "台灣.臺東縣" ? "selected" : "")>臺東縣</option>
+                    <option value="台灣.花蓮縣"@(item.Location == "台灣.花蓮縣" ? "selected" : "")>花蓮縣</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-2 control-label">圖片上傳 <span class="require">*</span></label>
+            <div class="col-lg-3">
+                @if (!string.IsNullOrEmpty(item.Image))
+                {
+                    <div>
+                        <img src="@item.Image" alt="Current Image" style="max-width: 200px; max-height: 200px;" />
+                        <input type="hidden" id="hiddenImange" value="@item.Image" />
+                    </div>
+                }
+                <input type="file" class="form-control" id="Image" name="newImage">
+            </div>
+        </div>
+    };
+    <div class="form-group">
+        <div class="col-lg-8 col-md-offset-2 padding-left-0 padding-top-20">
+            <button class="btn btn-primary" type="button" onclick="edit()">修改完成</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function edit() {
+        var imageVal = "";
+        if ($('#Image').val() == "") {
+            imageVal= $('#hiddenImange').val();
+        }
+        else {
+            imageVal= $('#Image').val();
+        }
+                $.ajax({
+            url: '@Url.Action("EditData", "Product")' ,
+            type: 'POST',
+            data:
+            {
+                Id: $('#Id').val(),
+                ProductName: $('#ProductName').val(),
+                Price: $('#Price').val(),
+                Image: imageVal,
+                category: $('#category').val(),
+                Stock: $('#Stock').val(),
+                Status: $('#Status').val(),
+                Location: $('#Location').val()
+            },
+            success: function (result) {
+                if (result) {
+                    alert("修改成功");
+                    window.location.href = '@Url.Action("Edit", "Product")';
+                }
+            },
+            error: function () {
+                $('#form-messages').html('<div class="alert alert-danger">An error occurred while submitting the form</div>');
+            }
+        });
+    }
+</script>
+

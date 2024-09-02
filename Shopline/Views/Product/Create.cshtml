@@ -1,0 +1,127 @@
+﻿@{
+    ViewBag.Title = "Create";
+}
+@model CreateProduct
+
+<div class="section-title text-center position-relative mb-5">
+    <h1 class="display-4">新增商品</h1>
+</div>
+<div class="content-form-page col-lg-12">
+
+    <div class="form-group">
+        <label class="col-lg-2 control-label">產品名稱 <span class="require" color="red">*</span></label>
+        <div class="col-lg-3">
+            <input type="text" class="form-control border-5 fa-black-tie " id="ProductName">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-2 control-label">價格 <span class="require">*</span></label>
+        <div class="col-lg-3">
+            <input type="text" id="Price" class="form-control border-5 fa-black-tie">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-2 control-label">庫存 <span class="require">*</span></label>
+        <div class="col-lg-3">
+            <input type="text" id="Stock" class="form-control border-5 fa-black-tie">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-2 control-label">商品狀況 <span class="require">*</span></label>
+        <div class="input-group-prepend">
+            <select class="btn btn-outline-light bg-white text-body px-4 border-5 fa-black-tie" id="Status">
+                <option selected="selected" value="">請選擇:</option>
+                <option value="全新">全新</option>
+                <option value="二手">二手</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-2 control-label">類別 <span class="require">*</span></label>
+        <div class="input-group-prepend">
+            <select class="btn btn-outline-light bg-white text-body px-4" id="category">
+                <option selected="selected" value="">請選擇:</option>
+                <option value="筆電">筆電</option>
+                <option value="平板電腦">平板電腦</option>
+                <option value="其他">其他</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-2 control-label">商品所在地 <span class="require">*</span></label>
+        <div class="input-group-prepend">
+            <select class="btn btn-outline-light bg-white text-body px-4" id="Location">
+                <option selected="selected" value="">請選擇:</option>
+                <option value="台灣.基隆市">基隆市</option>
+                <option value="台灣.臺北市">臺北市</option>
+                <option value="台灣.新北市">新北市</option>
+                <option value="台灣.新竹市">新竹市</option>
+                <option value="台灣.新竹縣">新竹縣</option>
+                <option value="台灣.臺中市">臺中市</option>
+                <option value="台灣.彰化縣">彰化縣</option>
+                <option value="台灣.南投縣">南投縣</option>
+                <option value="台灣.雲林縣">雲林縣</option>
+                <option value="台灣.嘉義市">嘉義市</option>
+                <option value="台灣.嘉義縣">嘉義縣</option>
+                <option value="台灣.臺南市">臺南市</option>
+                <option value="台灣.高雄市">高雄市</option>
+                <option value="台灣.臺中市">臺中市</option>
+                <option value="台灣.屏東縣">屏東縣</option>
+                <option value="台灣.臺東縣">臺東縣</option>
+                <option value="台灣.花蓮縣">花蓮縣</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-lg-2 control-label">圖片上傳 <span class="require">*</span></label>
+        <div class="col-lg-3">
+            <input type="file" id="Image" class="form-control border-top-0 border-right-0 border-left-0 p-0">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-lg-8 col-md-offset-2 padding-left-0 padding-top-20">
+            <button class="btn btn-primary" type="button" onclick="create()">新增</button>
+            <button class="btn btn-primary" type="button" onclick="demo()">測試</button>
+        </div>
+    </div>
+</div>
+<script>
+    function create() {
+        $.ajax({
+            url: '@Url.Action("CreateData", "Product")' ,
+            type: 'POST',
+            data:
+            {
+                ProductName: $('#ProductName').val(),
+                SellerName: $('#SellerName').val(),
+                Price: $('#Price').val(),
+                Image: $('#Image').val(),
+                category: $('#category').val(),
+                Stock: $('#Stock').val(),
+                Status: $('#Status').val(),
+                Location: $('#Location').val()
+            },
+            success: function (result) {
+                if (result) {
+                    alert("新增成功");
+                    window.location.href = '@Url.Action("Index", "Product")';
+                }
+            },
+            error: function () {
+                $('#form-messages').html('<div class="alert alert-danger">An error occurred while submitting the form</div>');
+            }
+        });
+    }
+    function demo() {
+        $('#ProductName').val("MSI 微星 Infinite S3 13-846TW/i5-13400F/RTX3050/512G/16G電競電腦");
+        $('#Price').val("10000");
+        $('#Stock').val("1");
+    }
+</script>
